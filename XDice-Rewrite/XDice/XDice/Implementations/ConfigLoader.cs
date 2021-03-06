@@ -1,12 +1,16 @@
-﻿using XDice.Models;
+﻿using XDice.Interfaces;
+using XDice.Models;
 
 namespace XDice.Implementations
 {
-    public class ConfigLoader
+    public class ConfigLoader : IConfigLoader
     {
-        public static SimpleConfig Load(string serverId)
+        public IConfig Load(string serverId)
         {
-            return new SimpleConfig();
+            return new SimpleConfig
+            {
+                
+            };
         }
     }
 }

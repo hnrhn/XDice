@@ -3,100 +3,71 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using XDice.Enums;
 using XDice.Interfaces;
+using XDice.Models;
 
 namespace XDice.Implementations
 {
     // TODO: This is currently a straight-up rewrite of the Python version, with no splitting SOC.
     public class SimpleCommandParser : ICommandParser
     {
-        private static readonly Regex RollCommandRegex = new Regex(@"[!/]r(?:oll)*\s*(\d*)\s*d*\s*(\d*)(?:\s*\++\s*(\d*))?");
-        
-        public string? GetResult(string command, string serverId)
-        {
-            var diceRoller = new GenericDiceRoller();
+        private static readonly Regex RollCommandRegex = new(@"r(?:oll)*\s*(\d*)\s*d*\s*(\d*)(?:\s*\++\s*(\d*))?", RegexOptions.Compiled);  // TODO: Look into making this an Assembly;
+        private readonly IDiceRoller _diceRoller;
+        private readonly IConfig _config;
 
-            var config = ConfigLoader.Load(serverId);
-            if (command.StartsWith("/rps") || command.StartsWith("!rps"))
+        public SimpleCommandParser(IDiceRoller diceRoller, IConfig config)
+        {
+            _diceRoller = diceRoller;
+            _config = config;
+        }
+
+        public ParsedRollCommand Parse(string rawCommand)
+        {
+            if (!rawCommand.StartsWith("/") && !rawCommand.StartsWith("!"))
             {
-                return diceRoller.RockPaperScissors();
+                return new ParsedRollCommand
+                {
+                    IsValidCommand = false
+                };
+            }
+            
+            var noPrefixCommand = rawCommand.ToLower().TrimStart('/', '!');
+            if (noPrefixCommand.StartsWith("rps"))
+            {
+                return new ParsedRollCommand
+                {
+                    SpecialRoll = SpecialRoll.RockPaperScissors
+                };
             }
 
-            var match = RollCommandRegex.Match(command);
+            if (noPrefixCommand.StartsWith("coin"))
+            {
+                return new ParsedRollCommand
+                {
+                    SpecialRoll = SpecialRoll.CoinFlip
+                };
+            }
+
+            var match = RollCommandRegex.Match(noPrefixCommand);
             if (!match.Success)
             {
-                return null;
-            }
-
-            var diceToRoll = string.IsNullOrEmpty(match.Groups[1].Value)
-                ? 1 
-                : int.Parse(match.Groups[1].Value);
-
-            var diceType = string.IsNullOrEmpty(match.Groups[2].Value)
-                ? config.DefaultDice
-                : int.Parse(match.Groups[2].Value);
-
-            var rolledDice = diceRoller.RollDice(diceToRoll, diceType);
-            int successes;
-            if (!string.IsNullOrEmpty(match.Groups[3].Value) && config.PlusBehaviour == PlusBehaviour.AutoSuccess)
-            {
-                successes = int.Parse(match.Groups[3].Value);
-            }
-            else
-            {
-                successes = 0;
-            }
-
-            switch (config.ExplodeBehaviour)
-            {
-                case ExplodeBehaviour.Extra:
+                return new ParsedRollCommand
                 {
-                    var explodingDiceCount = rolledDice.Count(rolledDie => config.ExplodeOn.Contains(rolledDie));
-                    rolledDice.AddRange(diceRoller.RollDice(explodingDiceCount, diceType));
-                    break;
-                }
-                case ExplodeBehaviour.ExtraWithChaining:
-                {
-                    var explodingDiceCount = rolledDice.Count(rolledDie => config.ExplodeOn.Contains(rolledDie));
-                    while (explodingDiceCount > 0)
-                    {
-                        var newDice = diceRoller.RollDice(explodingDiceCount, diceType);
-                        rolledDice.AddRange(newDice);
-                        explodingDiceCount = newDice.Count(rolledDie => config.ExplodeOn.Contains(rolledDie));
-                    }
-                    break;   
-                }
-                case ExplodeBehaviour.Double:
-                {
-                    successes += rolledDice.Count(rolledDie => config.ExplodeOn.Contains(rolledDie));
-                    break;
-                }
-                case ExplodeBehaviour.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                    IsValidCommand = false
+                };
             }
 
-            var resultString = rolledDice.ToString();
-
-            if (config.AddTotalModeActive)
+            return new ParsedRollCommand
             {
-                return $"{resultString} = {rolledDice.Sum()}";
-            }
-
-            if (!config.CountSuccessesModeActive || diceType != config.DefaultDice)
-            {
-                return resultString;
-            }
-
-            successes += rolledDice.Count(rolledDie => config.SuccessOn.Contains(rolledDie));
-            var critFails = rolledDice.Count(rolledDie => rolledDie == 1);
-
-            if (successes == 0 && critFails > 0 && config.CritFailBehaviour == CritFailBehaviour.OnesWithNoSuccesses)
-            {
-                return $"{resultString} = {critFails} Critical Fail{(critFails == 1 ? "" : "s")}";
-            }
-
-            return $"{resultString} = {successes} Success{(successes == 1 ? "" : "es")}";
+                NumberOfDice = string.IsNullOrEmpty(match.Groups[1].Value)
+                    ? 1 
+                    : int.Parse(match.Groups[1].Value),
+                SidesOnDice = string.IsNullOrEmpty(match.Groups[2].Value)
+                    ? _config.DefaultDice
+                    : int.Parse(match.Groups[2].Value),
+                PlusValue = string.IsNullOrEmpty(match.Groups[3].Value)
+                    ? 0
+                    : int.Parse(match.Groups[3].Value)
+            };
         }
     }
 }

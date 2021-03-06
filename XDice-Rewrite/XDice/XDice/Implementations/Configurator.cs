@@ -86,7 +86,7 @@ namespace XDice.Implementations
 
                 if (currentStep == ConfigStep.SuccessOn.ToString().ToLower())
                 {
-                    config.SuccessOn = split.Skip(1).Select(int.Parse);
+                    config.SuccessOn = split.Skip(1).Select(int.Parse).ToList();
                     config.CurrentConfigStep = ConfigStep.PlusBehaviour;
 
                     return string.Format($"Nice!\n\n{ConfigHelperTemp.PlusBehaviourStep}", ConfigStep.PlusBehaviour.ToString().ToLower(), "~~", "");
@@ -152,12 +152,12 @@ namespace XDice.Implementations
                     }
 
                     config.CurrentConfigStep = ConfigStep.Confirm;
-                    return string.Format(ConfigHelperTemp.ConfirmStep, ConfigStep.Confirm.ToString().ToLower(), Helper.GetHelp());
+                    return string.Format(ConfigHelperTemp.ConfirmStep, ConfigStep.Confirm.ToString().ToLower(), Helper.GetHelp(config));
                 }
 
                 if (currentStep == ConfigStep.ExplodeOn.ToString().ToLower())
                 {
-                    config.ExplodeOn = split.Skip(1).Select(int.Parse);
+                    config.ExplodeOn = split.Skip(1).Select(int.Parse).ToList();
                     config.CurrentConfigStep = ConfigStep.CritFailBehaviour;
                     return string.Format(ConfigHelperTemp.CritFailStep, ConfigStep.CritFailBehaviour.ToString().ToLower());
                 }
@@ -172,7 +172,7 @@ namespace XDice.Implementations
                     };
 
                     config.CurrentConfigStep = ConfigStep.Confirm;
-                    return string.Format(ConfigHelperTemp.ConfirmStep, ConfigStep.Confirm.ToString().ToLower(), Helper.GetHelp());
+                    return string.Format(ConfigHelperTemp.ConfirmStep, ConfigStep.Confirm.ToString().ToLower(), Helper.GetHelp(config));
                 }
 
                 if (currentStep == ConfigStep.Confirm.ToString().ToLower())

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDice.Console", "XDice.Console\XDice.Console.csproj", "{D4C4BF25-9793-469D-931D-971DF118751C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDice.DiscordClient", "XDice.DiscordClient\XDice.DiscordClient.csproj", "{D4C4BF25-9793-469D-931D-971DF118751C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XDice", "XDice\XDice.csproj", "{E3983593-CFC0-4616-8DE1-C752720357C8}"
 EndProject

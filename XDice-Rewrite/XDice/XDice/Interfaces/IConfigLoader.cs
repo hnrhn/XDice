@@ -1,7 +1,7 @@
 ﻿namespace XDice.Interfaces
 {
-    public class IConfigLoader
+    public interface IConfigLoader
     {
-        
+        IConfig Load(string serverId);
     }
 }
