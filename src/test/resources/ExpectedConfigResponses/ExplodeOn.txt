@@ -1,0 +1,7 @@
+Got it! And now I just need to tell XDice which dice should explode for you.
+
+`/xdice config explode_on 10` will explode any 10s. `/xdice config explode_on 10 9 8 1` will explode every 10, 9, 8, and 1 (why not?)
+
+Careful, XDice is a fussy eater. If more than one number should explode, you need to make sure there's only **one** space between each of the numbers you type.
+
+Off you go!
