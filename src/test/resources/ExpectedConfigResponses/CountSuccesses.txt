@@ -1,0 +1,12 @@
+Great! By default, XDice will roll d501s for you. On to the next step!
+
+Are you using a system where rolling a certain number or higher on your usual die counts as a "Success"? XDice can help you out, and automatically count the Successes you roll.
+
+For example, if a 7 or higher on a d10 counts as a success for you, then XDice can show you something like this:
+
+    **[8, 7, 5, 3, 1] = 2 Successes**
+
+To enable this, send a message of `/xdice config count_successes yes`. To disable it, `/xdice config count_successes no`. Nice and straightforward!
+
+So, would you like XDice to count successes for you? _(Note: This will only apply to d501s. Other dice will just be rolled and displayed for you.)_
+

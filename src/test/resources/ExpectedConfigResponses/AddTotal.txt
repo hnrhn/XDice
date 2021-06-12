@@ -1,0 +1,3 @@
+Alrighty, no success-counting needed! But what about adding up the total of all of your dice in a roll? Is that something we can interest you in?
+
+`/xdice config add_total yes` if you'd like that, or `/xdice config add_total no` if you want XDice to show you what you rolled and nothing more!

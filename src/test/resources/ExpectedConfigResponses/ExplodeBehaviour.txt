@@ -1,0 +1,10 @@
+Our next step seems dangerous. "Exploding Dice"! In some systems, when you roll a certain number, the die can "explode" into copies of itself! XDice likes this one. She can handle that in _four_ different ways:
+
+1) No explosions. The gunpowder will be removed from all dice post-haste!
+2) Double success. XDice will add an extra success for every explosion, no questions asked
+3) Roll again. Every exploding die magically clones itself and rolls again. The copies can't explode, so on the second roll, what you get is what you get.
+4) Roll again, with exploding copies. Potentially infinite explosions! Exploding dice create copies, and those copies can explode too.
+
+Your magic incantation for choosing the right level of explosions for your game is `/xdice config explode_behaviour 1` (or 2 or 3 or 4!)
+
+So what's it gonna be?

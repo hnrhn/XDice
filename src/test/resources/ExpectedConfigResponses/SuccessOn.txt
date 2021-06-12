@@ -1,0 +1,6 @@
+Excellent! Of course, to count Successes, XDice needs to know what your game considers a success to be, so let's configure that now.
+
+Send a message like this: `/xdice config success_on 10 9 8 1`.
+In this example, 8s, 9s, 10s, and..... 1s for some reason, will all count as Successes!
+
+This step is a little tricky for poor XDice, so make sure you include every number you want to consider as a success, with **one** space between them.

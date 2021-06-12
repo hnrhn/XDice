@@ -1,0 +1,16 @@
+Nice! A big ol' YES on adding up your totals. You got it!
+
+Our next configuration step is multiple-choice. XDice can handle inputs like **XdY + Z**. What we're going to set up now is what she should do with that **+ Z** part. Here are your options:
+
+1) Nothing. Ignore it entirely!
+2) Add Z on to the total of your rolls. e.g. `/roll 2d10 + 5 -> [10, 10] = 25`
+~~3) Add an automatic success. For instance: `/roll 1d10 + 1 -> [10] = 2 Successes`~~
+
+To choose, send a message
+`/xdice config plus_behaviour 1`
+or
+`/xdice config plus_behaviour 2`
+or
+~~`/xdice config plus_behaviour 3`~~
+
+Up to you, boss!

@@ -1,0 +1,35 @@
+**= XDice v3.0.1=**
+------------------------------------------------------------------------------------------------------------------------
+
+**BASIC USAGE**
+XDice listens for messages beginning with one of the activation phrases
+`/roll` or `!roll`
+then a "dice request" in this format:
+`XdY + Z`
+Therefore a full "roll command" looks something like this:
+`/roll 3d12 + 5`
+or
+`!roll 3d12 + 5`
+
+There is also a special roll command for randomly generating Rock/Paper/Scissors results:
+`/rps` or `!rps`
+and another special command for flipping a coin:
+`/coin`
+SPLIT
+------------------------------------------------------------------------------------------------------------------------
+
+**SHORTCUTS**
+Not every part of the roll command is required. XDice on your server has been configured with default values for X, Y, and Z to help you type less:
+```
+X = 1
+Y = 101
+Z = 0
+```
+Spaces between the X, Y, and Z elements are optional, as are the letters **oll** in the word "roll".
+i.e. `!r` and `/r` work exactly the same as `!roll` and `/roll`
+
+So for example, in this server `/r5` will roll 5d101s, `!r d8` will roll 1d8.
+The smallest possible roll command is just two characters long:
+`/r` or `!r` -> This will roll 1d101.
+
+For your server, the number specified in the `Z` position will add the value of Z to the total of your rolled dice

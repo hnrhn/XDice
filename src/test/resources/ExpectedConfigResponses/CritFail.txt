@@ -1,0 +1,9 @@
+We're getting close to the end now, just one more configuration to set up!
+In many Success-based systems, rolling 1s without any successes is a Critical Failure. Do you want XDice to let you know when that happens? It'll look something like this:
+**[3,2,1,1] = Critical Fail**
+
+`/xdice config crit_fail_behaviour yes`
+or
+`/xdice config crit_fail_behaviour no`.
+
+One last time, tell me what you need!
