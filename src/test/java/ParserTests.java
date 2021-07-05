@@ -88,7 +88,9 @@ public class ParserTests {
         "/r 1+2,2",
         "/r,0"
     })
-    void diceRollStringReturnsCorrectBonusValue(String diceRoll, Long expectedOutcome) {
+    void diceRollStringReturnsCorrectBonusValueWhenInAutoSuccessesMode(String diceRoll, Long expectedOutcome) {
+        baseConfig.setCountSuccesses(true);
+        baseConfig.setPlusBehaviour(PlusBehaviour.AUTO_SUCCESS);
         assertEquals(expectedOutcome, parseCommandString(diceRoll, baseConfig).getModifier());
     }
 

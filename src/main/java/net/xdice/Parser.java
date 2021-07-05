@@ -58,7 +58,7 @@ public class Parser {
             );
 
             command.setModifier(
-                (rollMatcher.group(3) == null || rollMatcher.group(3).isEmpty()) || config.getPlusBehaviour() != PlusBehaviour.IGNORE    // TODO: Remove this so config is not needed for parse.
+                (rollMatcher.group(3) == null || rollMatcher.group(3).isEmpty()) || config.getPlusBehaviour() == PlusBehaviour.IGNORE    // TODO: Remove this so config is not needed for parse.
                     ? 0
                     : Integer.parseInt(rollMatcher.group(3))
             );
