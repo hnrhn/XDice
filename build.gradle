@@ -4,20 +4,20 @@ plugins {
 }
 
 group 'net.xdice'
-version '3.1.1'
+version '3.2.0'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.javacord:javacord:3.1.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.2'
-    implementation 'org.jetbrains:annotations:20.1.0'
-    implementation 'org.xerial:sqlite-jdbc:3.34.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    testImplementation "org.mockito:mockito-core:3.+"
+    implementation 'org.javacord:javacord:3.3.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+    implementation 'org.jetbrains:annotations:22.0.0'
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    testImplementation 'org.mockito:mockito-core:3.12.4'
 }
 
 test {
@@ -27,6 +27,6 @@ test {
 jar {
     manifest {
         attributes 'Manifest-Version': '1.0'
-        attributes 'Main-Class': 'net.xdice.DiscordListener'
+        attributes 'Main-Class': 'net.xdice.Main'
     }
 }

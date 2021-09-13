@@ -1,7 +1,7 @@
 package net.xdice;
 
 public class Constants {
-    public static final String xDiceVersion = "3.1.1";
+    public static final String xDiceVersion = "3.2.0";
     public static final String configCommand = "/xdice config";
     public static final String helpCommand = "/xdice help";
     public static final String configChannelName = "xdice-config";

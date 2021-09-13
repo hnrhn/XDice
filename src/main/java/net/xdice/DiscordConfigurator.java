@@ -1,6 +1,7 @@
 package net.xdice;
 
 import net.xdice.enums.*;
+import net.xdice.interfaces.HelpGenerator;
 import net.xdice.interfaces.XDiceRepository;
 import net.xdice.models.XDiceConfig;
 import net.xdice.utilities.ConfigStepConverter;

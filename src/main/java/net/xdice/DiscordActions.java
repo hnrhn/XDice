@@ -1,9 +1,5 @@
 package net.xdice;
 
-import net.xdice.enums.ConfigStep;
-import net.xdice.enums.CritFailBehaviour;
-import net.xdice.enums.ExplodeBehaviour;
-import net.xdice.enums.PlusBehaviour;
 import net.xdice.models.XDiceConfig;
 import org.javacord.api.entity.DiscordEntity;
 import org.javacord.api.entity.channel.ServerTextChannel;
@@ -15,19 +11,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DiscordCallbacks {
-    private final ConfigRepository configRepository;
-
-    public DiscordCallbacks(ConfigRepository repo) {
-        configRepository = repo;
-    }
-
-    public void onLoggedIn(String botUsername, Collection<Server> servers) {
+public class DiscordActions {
+    public static void onLoggedIn(String botUsername, Collection<Server> servers) {
         System.out.println("Logged in as " + botUsername);
 
         HashSet<Long> knownConfigs;
         try {
-            knownConfigs = configRepository.getKnownGuilds();
+            knownConfigs = DIContainer.getRepository().getKnownGuilds();
         } catch (SQLException e) {
             e.printStackTrace();
             return;
@@ -36,7 +26,7 @@ public class DiscordCallbacks {
         // Validate that a config for each ID can be loaded
         for (long guildId: knownConfigs) {
             try {
-                configRepository.getConfig(guildId);
+                DIContainer.getRepository().getConfig(guildId);
                 System.out.println("Config found for guild " + guildId);
             } catch (SQLException e) {
                 System.err.println("Error loading config for guild " + guildId);
@@ -56,9 +46,9 @@ public class DiscordCallbacks {
         System.out.println("All Configs loaded");
     }
 
-    public void onJoinGuild(Server server) {
+    public static void onJoinGuild(Server server) {
         try {
-            if (configRepository.getKnownGuilds().contains(server.getId())) {
+            if (DIContainer.getRepository().getKnownGuilds().contains(server.getId())) {
                 return;
             }
         } catch (SQLException e) {
@@ -68,22 +58,10 @@ public class DiscordCallbacks {
         }
 
         ServerTextChannel configChannel = server.createTextChannelBuilder().setName(Constants.configChannelName).create().join();
-        XDiceConfig newConfig = new XDiceConfig(
-                server.getId(),
-                false,
-                ConfigStep.BEGIN,
-                20,
-                false,
-                null,
-                false,
-                PlusBehaviour.IGNORE,
-                ExplodeBehaviour.NONE,
-                null,
-                CritFailBehaviour.NONE
-        );
+        XDiceConfig newConfig = XDiceConfig.getDefaultConfig(server.getId());
 
         try {
-            configRepository.saveConfig(newConfig);
+            DIContainer.getRepository().saveConfig(newConfig);
             System.out.println("Created new config for " + server.getIdAsString());
         } catch (SQLException e) {
             e.printStackTrace();

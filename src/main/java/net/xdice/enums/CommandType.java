@@ -10,5 +10,10 @@ public enum CommandType {
     CONFIG,
     HELP,
     INVALID,
-    LOVE
+    LOVE,
+    FL_ROLL,
+    FL_PRIDE,
+    FL_PUSH,
+    FL_CREATE_NEW_DECK,
+    FL_DRAW_INITIATIVE
 }
