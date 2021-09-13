@@ -1,36 +1,28 @@
-import net.xdice.HelpGenerator;
-import net.xdice.enums.ConfigStep;
+import net.xdice.StandardHelpGenerator;
 import net.xdice.enums.CritFailBehaviour;
 import net.xdice.enums.ExplodeBehaviour;
 import net.xdice.enums.PlusBehaviour;
 import net.xdice.models.XDiceConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HelpTextTests {
-    HelpGenerator ai = new HelpGenerator();
-    XDiceConfig config = new XDiceConfig(
-            1L,
-            false,
-            ConfigStep.BEGIN,
-            101,
-            false,
-            new ArrayList<>(),
-            false,
-            PlusBehaviour.IGNORE,
-            ExplodeBehaviour.NONE,
-            new ArrayList<>(),
-            CritFailBehaviour.NONE
-    );
+    StandardHelpGenerator ai = new StandardHelpGenerator();
+    XDiceConfig config = XDiceConfig.getDefaultConfig(1);
+
+    @BeforeEach
+    void setDefaultDiceToOneHundredAndOne() {
+        config.setDefaultDice(101);
+    }
 
     @Test
     void placeholderLineIsSuccessfullyRemoved() {

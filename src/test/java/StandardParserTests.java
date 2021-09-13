@@ -1,3 +1,4 @@
+import net.xdice.StandardParser;
 import net.xdice.enums.*;
 import net.xdice.models.XDiceConfig;
 import org.junit.jupiter.api.Test;
@@ -7,11 +8,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static net.xdice.Parser.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserTests {
-    private final XDiceConfig baseConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 10, false, Collections.emptyList(), false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.NONE);
+public class StandardParserTests {
+    private final XDiceConfig baseConfig = XDiceConfig.getDefaultConfig(1);
+    private StandardParser parser = new StandardParser();
 
     @ParameterizedTest
     @ValueSource(strings = {
@@ -53,7 +54,7 @@ public class ParserTests {
         "!roll1d10+1"
     })
     void validDiceRollStringReturnsXDiceCommandOfTypeDICE(String validDiceRoll) {
-        assertEquals(CommandType.DICE, parseCommandString(validDiceRoll, baseConfig).getCommandType());
+        assertEquals(CommandType.DICE, parser.parseCommandString(validDiceRoll, baseConfig).getCommandType());
     }
 
     @ParameterizedTest
@@ -65,7 +66,7 @@ public class ParserTests {
         "/r 3d10+1,3"
     })
     void diceRollStringReturnsCorrectNumberOfDice(String diceRoll, Integer expectedOutcome) {
-        assertEquals(expectedOutcome, parseCommandString(diceRoll, baseConfig).getNumberOfDice());
+        assertEquals(expectedOutcome, parser.parseCommandString(diceRoll, baseConfig).getNumberOfDice());
     }
 
     @ParameterizedTest
@@ -78,7 +79,7 @@ public class ParserTests {
     })
     void diceRollStringReturnsCorrectTypeOfDice(String diceRoll, Integer suppliedOutcome) {
         var expectedOutcome = suppliedOutcome == -1 ? baseConfig.getDefaultDice() : suppliedOutcome;
-        assertEquals(expectedOutcome, parseCommandString(diceRoll, baseConfig).getTypeOfDice());
+        assertEquals(expectedOutcome, parser.parseCommandString(diceRoll, baseConfig).getTypeOfDice());
     }
 
     @ParameterizedTest
@@ -91,27 +92,27 @@ public class ParserTests {
     void diceRollStringReturnsCorrectBonusValueWhenInAutoSuccessesMode(String diceRoll, Long expectedOutcome) {
         baseConfig.setCountSuccesses(true);
         baseConfig.setPlusBehaviour(PlusBehaviour.AUTO_SUCCESS);
-        assertEquals(expectedOutcome, parseCommandString(diceRoll, baseConfig).getModifier());
+        assertEquals(expectedOutcome, parser.parseCommandString(diceRoll, baseConfig).getModifier());
     }
 
     @Test
     void rpsReturnsXDiceCommandOfTypeROCK_PAPER_SCISSORS() {
-        assertEquals(CommandType.ROCK_PAPER_SCISSORS, parseCommandString("/rps", baseConfig).getCommandType());
+        assertEquals(CommandType.ROCK_PAPER_SCISSORS, parser.parseCommandString("/rps", baseConfig).getCommandType());
     }
 
     @Test
     void coinReturnsXDiceCommandOfTypeCOIN() {
-        assertEquals(CommandType.COIN, parseCommandString("/coin", baseConfig).getCommandType());
+        assertEquals(CommandType.COIN, parser.parseCommandString("/coin", baseConfig).getCommandType());
     }
 
     @Test
     void xdiceConfigReturnsXDiceCommandOfTypeCONFIG() {
-        assertEquals(CommandType.CONFIG, parseCommandString("/xdice config", baseConfig).getCommandType());
+        assertEquals(CommandType.CONFIG, parser.parseCommandString("/xdice config", baseConfig).getCommandType());
     }
 
     @Test
     void xdiceHelpReturnsXDiceCommandOfTypeCONFIG() {
-        assertEquals(CommandType.HELP, parseCommandString("/xdice help", baseConfig).getCommandType());
+        assertEquals(CommandType.HELP, parser.parseCommandString("/xdice help", baseConfig).getCommandType());
     }
 
     @ParameterizedTest
@@ -142,7 +143,7 @@ public class ParserTests {
         "what are you doing, dicebot",
     })
     void validWtfStringsReturnXDiceCommandOfTypeWTF(String wtfString) {
-        assertEquals(CommandType.WTF, parseCommandString(wtfString, baseConfig).getCommandType());
+        assertEquals(CommandType.WTF, parser.parseCommandString(wtfString, baseConfig).getCommandType());
     }
 
     @ParameterizedTest
@@ -157,7 +158,7 @@ public class ParserTests {
         "thanks, dicebot"
     })
     void validThanksStringsReturnXDiceCommandOfTypeTHANKS(String thanksString) {
-        assertEquals(CommandType.THANKS, parseCommandString(thanksString, baseConfig).getCommandType());
+        assertEquals(CommandType.THANKS, parser.parseCommandString(thanksString, baseConfig).getCommandType());
     }
 
     @ParameterizedTest
@@ -184,7 +185,7 @@ public class ParserTests {
         "go away, dicebot",
     })
     void validInsultStringsReturnXDiceCommandOfTypeINSULT(String insultString) {
-        assertEquals(CommandType.INSULT, parseCommandString(insultString, baseConfig).getCommandType());
+        assertEquals(CommandType.INSULT, parser.parseCommandString(insultString, baseConfig).getCommandType());
     }
 
     @ParameterizedTest
@@ -215,7 +216,7 @@ public class ParserTests {
         "xdice, i would die for you"
     })
     void validLoveStringsReturnXDiceCommandOfTypeLOVE(String loveString) {
-        assertEquals(CommandType.LOVE, parseCommandString(loveString, baseConfig).getCommandType());
+        assertEquals(CommandType.LOVE, parser.parseCommandString(loveString, baseConfig).getCommandType());
     }
 
     @ParameterizedTest
@@ -225,6 +226,6 @@ public class ParserTests {
         "12"
     })
     void invalidStringsReturnXDiceCommandOfTypeINVALID(String invalidString) {
-        assertEquals(CommandType.INVALID, parseCommandString(invalidString, baseConfig).getCommandType());
+        assertEquals(CommandType.INVALID, parser.parseCommandString(invalidString, baseConfig).getCommandType());
     }
 }

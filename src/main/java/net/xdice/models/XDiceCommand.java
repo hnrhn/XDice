@@ -1,12 +1,15 @@
 package net.xdice.models;
 
 import net.xdice.enums.CommandType;
+import net.xdice.fallenkingdoms.FKDice;
 
 public class XDiceCommand {
     private CommandType commandType;
     private Integer numberOfDice;
     private Integer typeOfDice;
     private Integer modifier;
+    private FKDice fallenKingdomsDice;
+    private String fallenKingdomsUserId;
 
     public XDiceCommand(){}
 
@@ -24,6 +27,11 @@ public class XDiceCommand {
         this.numberOfDice = numberOfDice;
         this.typeOfDice = typeOfDice;
         this.modifier = modifier;
+    }
+
+    public XDiceCommand(CommandType commandType, FKDice fallenKingdomsDice) {
+        this.commandType = commandType;
+        this.fallenKingdomsDice = fallenKingdomsDice;
     }
 
     public CommandType getCommandType() {
@@ -56,5 +64,13 @@ public class XDiceCommand {
 
     public void setModifier(int modifier) {
         this.modifier = modifier;
+    }
+
+    public FKDice getFallenKingdomsDice() {
+        return fallenKingdomsDice;
+    }
+
+    public void setFallenKingdomsDice(FKDice fallenKingdomsDice) {
+        this.fallenKingdomsDice = fallenKingdomsDice;
     }
 }

@@ -1,6 +1,6 @@
 import net.xdice.Constants;
 import net.xdice.DiscordConfigurator;
-import net.xdice.HelpGenerator;
+import net.xdice.StandardHelpGenerator;
 import net.xdice.ConfigInstructions;
 import net.xdice.enums.ConfigStep;
 import net.xdice.enums.CritFailBehaviour;
@@ -38,20 +38,8 @@ public class DiscordConfiguratorTests {
     MessageAuthor mockedMessageAuthor = mock(MessageAuthor.class);
     User mockedUser = mock(User.class);
 
-    HelpGenerator helpGenerator = new HelpGenerator();
-    XDiceConfig baseConfig = new XDiceConfig(
-            1L,
-            false,
-            ConfigStep.BEGIN,
-            101,
-            false,
-            new ArrayList<>(),
-            false,
-            PlusBehaviour.IGNORE,
-            ExplodeBehaviour.NONE,
-            new ArrayList<>(),
-            CritFailBehaviour.NONE
-    );
+    StandardHelpGenerator helpGenerator = new StandardHelpGenerator();
+    XDiceConfig baseConfig = XDiceConfig.getDefaultConfig(1L);
     DiscordConfigurator dc = new DiscordConfigurator(mockedRepo, helpGenerator);
 
     private final Map<String, PlusBehaviour> correctPlusBehaviourMapping = Map.of(

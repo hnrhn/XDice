@@ -1,9 +1,6 @@
 package net.xdice.models;
 
-import net.xdice.enums.ConfigStep;
-import net.xdice.enums.CritFailBehaviour;
-import net.xdice.enums.ExplodeBehaviour;
-import net.xdice.enums.PlusBehaviour;
+import net.xdice.enums.*;
 
 import java.util.List;
 
@@ -30,6 +27,8 @@ public class XDiceConfig {
 
     private CritFailBehaviour critFailBehaviour;
 
+    private RollerSelection rollerSelection;
+
     public XDiceConfig(
         long guildId,
         boolean configMode,
@@ -41,7 +40,8 @@ public class XDiceConfig {
         PlusBehaviour plusBehaviour,
         ExplodeBehaviour explodeBehaviour,
         List<Integer> explodeOn,
-        CritFailBehaviour critFailBehaviour
+        CritFailBehaviour critFailBehaviour,
+        RollerSelection rollerSelection
     ) {
         this.guildId = guildId;
         this.configMode = configMode;
@@ -54,6 +54,7 @@ public class XDiceConfig {
         this.explodeBehaviour = explodeBehaviour;
         this.explodeOn = explodeOn;
         this.critFailBehaviour = critFailBehaviour;
+        this.rollerSelection = rollerSelection;
     }
 
     public static XDiceConfig getDefaultConfig(long guildId) {
@@ -68,7 +69,8 @@ public class XDiceConfig {
             PlusBehaviour.IGNORE,
             ExplodeBehaviour.NONE,
             null,
-            CritFailBehaviour.NONE
+            CritFailBehaviour.NONE,
+            RollerSelection.STANDARD
         );
     }
 
@@ -154,5 +156,13 @@ public class XDiceConfig {
 
     public void setCritFailBehaviour(CritFailBehaviour critFailBehaviour) {
         this.critFailBehaviour = critFailBehaviour;
+    }
+
+    public RollerSelection getRollerSelection() {
+        return rollerSelection;
+    }
+
+    public void setRollerSelection(RollerSelection rollerSelection) {
+        this.rollerSelection = rollerSelection;
     }
 }

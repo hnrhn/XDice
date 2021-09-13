@@ -1,13 +1,14 @@
 package net.xdice;
 
 import net.xdice.enums.*;
+import net.xdice.interfaces.XDiceRoller;
 import net.xdice.models.XDiceCommand;
 import net.xdice.models.XDiceConfig;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Roller {
+public class StandardRoller implements XDiceRoller {
     public String rollDice(XDiceCommand command, XDiceConfig config) {
         var successes = config.getPlusBehaviour() == PlusBehaviour.AUTO_SUCCESS ? command.getModifier() : 0;
 

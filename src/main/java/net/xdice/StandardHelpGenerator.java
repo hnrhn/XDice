@@ -3,12 +3,13 @@ package net.xdice;
 import net.xdice.enums.CritFailBehaviour;
 import net.xdice.enums.ExplodeBehaviour;
 import net.xdice.enums.PlusBehaviour;
+import net.xdice.interfaces.HelpGenerator;
 import net.xdice.models.XDiceConfig;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class HelpGenerator {
+public class StandardHelpGenerator implements HelpGenerator {
     public String getHelp(XDiceConfig config) {
         ArrayList<String> help = new ArrayList<>();
         help.add("**= XDice v" + Constants.xDiceVersion + "=**");

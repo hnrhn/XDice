@@ -1,8 +1,5 @@
-import net.xdice.ConfigRepository;
-import net.xdice.enums.ConfigStep;
-import net.xdice.enums.CritFailBehaviour;
-import net.xdice.enums.ExplodeBehaviour;
-import net.xdice.enums.PlusBehaviour;
+import net.xdice.XDiceRepositoryImpl;
+import net.xdice.enums.*;
 import net.xdice.models.XDiceConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ConfigRepoTests {
     private Connection testDb;
-    private ConfigRepository testRepo;
+    private XDiceRepositoryImpl testRepo;
     private Map<Long, XDiceConfig> correctResponses;
 
     @BeforeEach
@@ -31,9 +28,7 @@ public class ConfigRepoTests {
         createTableStatement.executeUpdate("""
 CREATE TABLE configs
 (
-    Id                  INTEGER NOT NULL
-        CONSTRAINT configs_pk
-            PRIMARY KEY,
+    Id                  INTEGER NOT NULL CONSTRAINT configs_pk PRIMARY KEY,
     GuildId             INTEGER NOT NULL,
     InConfigMode        INTEGER DEFAULT 0 NOT NULL,
     CurrentConfigStep   INTEGER DEFAULT 1 NOT NULL,
@@ -44,7 +39,8 @@ CREATE TABLE configs
     PlusBehaviourId     INTEGER DEFAULT 1 NOT NULL,
     ExplodeBehaviourId  INTEGER DEFAULT 1 NOT NULL,
     ExplodeOn           TEXT,
-    CritFailBehaviourId INTEGER DEFAULT 1 NOT NULL
+    CritFailBehaviourId INTEGER DEFAULT 1 NOT NULL,
+    RollerId            INTEGER DEFAULT 1 NOT NULL
 );
 
 CREATE UNIQUE INDEX configs_GuildId_uindex
@@ -58,23 +54,21 @@ CREATE UNIQUE INDEX configs_Id_uindex
             insertStatement.executeUpdate("""
 INSERT INTO configs
 VALUES
-    (1, 1001,   0,  1,  20, 0,  null,       0,  1,  1,  null,   1),
-    (2, 1002,   0,  1,  10, 1,  '10,9,8,7', 0,  3,  2,  '10',     2),
-    (3, 1003,   0,  1,  10, 1,  '10,9,8,7', 0,  3,  2,  '10',     2),
-    (4, 1004,   0,  1,  10, 1,  '10,9,8,7', 0,  3,  2,  '10',     2),
-    (5, 1005,   0,  1,  20, 0,  null,       0,  1,  1,  null,   1),
-    (6, 1006,   0,  1,  6,  1,  '6,5',      0,  1,  1,  null,   2),
-    (7, 1007,   0,  1,  6,  1,  '6,5',      0,  1,  1,  null,   2),
-    (8, 1008,   0,  1,  20, 0,  null,       0,  1,  1,  null,   1)
+    (1, 1001, 0, 1, 20, 0,       null, 0, 1, 1, null, 1, 1),
+    (2, 1002, 0, 1, 10, 1, '10,9,8,7', 0, 3, 2, '10', 2, 1),
+    (3, 1003, 0, 1, 10, 1, '10,9,8,7', 0, 3, 2, '10', 2, 1),
+    (4, 1004, 0, 1, 10, 1, '10,9,8,7', 0, 3, 2, '10', 2, 1),
+    (5, 1005, 0, 1, 20, 0,       null, 0, 1, 1, null, 1, 1),
+    (6, 1006, 0, 1,  6, 1,      '6,5', 0, 1, 1, null, 2, 1),
+    (7, 1007, 0, 1,  6, 1,      '6,5', 0, 1, 1, null, 2, 1),
+    (8, 1008, 0, 1, 20, 0,       null, 0, 1, 1, null, 1, 1)
 """);   // TODO: Deduplicate these test cases.
 
         Statement createDraftTableStatement = conn.createStatement();
         createDraftTableStatement.executeUpdate("""
 CREATE TABLE config_drafts
 (
-    Id                  INTEGER NOT NULL
-        CONSTRAINT configs_pk
-            PRIMARY KEY,
+    Id                  INTEGER NOT NULL CONSTRAINT configs_pk PRIMARY KEY,
     GuildId             INTEGER NOT NULL,
     InConfigMode        INTEGER DEFAULT 0 NOT NULL,
     CurrentConfigStep   INTEGER DEFAULT 1 NOT NULL,
@@ -85,42 +79,43 @@ CREATE TABLE config_drafts
     PlusBehaviourId     INTEGER DEFAULT 1 NOT NULL,
     ExplodeBehaviourId  INTEGER DEFAULT 1 NOT NULL,
     ExplodeOn           TEXT,
-    CritFailBehaviourId INTEGER DEFAULT 1 NOT NULL
+    CritFailBehaviourId INTEGER DEFAULT 1 NOT NULL,
+    RollerId            INTEGER DEFAULT 1 NOT NULL
 );
 
 CREATE UNIQUE INDEX config_drafts_GuildId_uindex
-    ON configs (GuildId);
+    ON config_drafts (GuildId);
 
 CREATE UNIQUE INDEX config_drafts_Id_uindex
-    ON configs (Id);
+    ON config_drafts (Id);
 """);
 
         Statement insertDraftStatement = conn.createStatement();
         insertDraftStatement.executeUpdate("""
 INSERT INTO config_drafts
 VALUES
-    (1, 1001,   0,  1,  20, 0,  null,       0,  1,  1,  null,   1),
-    (2, 1002,   0,  1,  10, 1,  '10,9,8,7', 0,  3,  2,  '10',     2),
-    (3, 1003,   0,  1,  10, 1,  '10,9,8,7', 0,  3,  2,  '10',     2),
-    (4, 1004,   0,  1,  10, 1,  '10,9,8,7', 0,  3,  2,  '10',     2),
-    (5, 1005,   0,  1,  20, 0,  null,       0,  1,  1,  null,   1),
-    (6, 1006,   0,  1,  6,  1,  '6,5',      0,  1,  1,  null,   2),
-    (7, 1007,   0,  1,  6,  1,  '6,5',      0,  1,  1,  null,   2),
-    (8, 1008,   0,  1,  20, 0,  null,       0,  1,  1,  null,   1)
+    (1, 1001, 0, 1, 20, 0,       null, 0, 1, 1, null, 1, 1),
+    (2, 1002, 0, 1, 10, 1, '10,9,8,7', 0, 3, 2, '10', 2, 1),
+    (3, 1003, 0, 1, 10, 1, '10,9,8,7', 0, 3, 2, '10', 2, 1),
+    (4, 1004, 0, 1, 10, 1, '10,9,8,7', 0, 3, 2, '10', 2, 1),
+    (5, 1005, 0, 1, 20, 0,       null, 0, 1, 1, null, 1, 1),
+    (6, 1006, 0, 1,  6, 1,      '6,5', 0, 1, 1, null, 2, 1),
+    (7, 1007, 0, 1,  6, 1,      '6,5', 0, 1, 1, null, 2, 1),
+    (8, 1008, 0, 1, 20, 0,       null, 0, 1, 1, null, 1, 1)
 """);   // TODO: Deduplicate these test cases.
 
         testDb = conn;
-        testRepo = new ConfigRepository(conn);
+        testRepo = new XDiceRepositoryImpl(conn);
 
         correctResponses = Map.of(
-            1001L, new XDiceConfig(1001L, false, ConfigStep.BEGIN, 20, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE),
-            1002L, new XDiceConfig(1002L, false, ConfigStep.BEGIN, 10, true, List.of(10,9,8,7), false, PlusBehaviour.AUTO_SUCCESS, ExplodeBehaviour.DOUBLE, List.of(10), CritFailBehaviour.ONE_NO_SUCCESSES),
-            1003L, new XDiceConfig(1003L, false, ConfigStep.BEGIN, 10, true, List.of(10,9,8,7), false, PlusBehaviour.AUTO_SUCCESS, ExplodeBehaviour.DOUBLE, List.of(10), CritFailBehaviour.ONE_NO_SUCCESSES),
-            1004L, new XDiceConfig(1004L, false, ConfigStep.BEGIN, 10, true, List.of(10,9,8,7), false, PlusBehaviour.AUTO_SUCCESS, ExplodeBehaviour.DOUBLE, List.of(10), CritFailBehaviour.ONE_NO_SUCCESSES),
-            1005L, new XDiceConfig(1005L, false, ConfigStep.BEGIN, 20, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE),
-            1006L, new XDiceConfig(1006L, false, ConfigStep.BEGIN, 6, true, List.of(6,5), false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.ONE_NO_SUCCESSES),
-            1007L, new XDiceConfig(1007L, false, ConfigStep.BEGIN, 6, true, List.of(6,5), false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.ONE_NO_SUCCESSES),
-            1008L, new XDiceConfig(1008L, false, ConfigStep.BEGIN, 20, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE)
+            1001L, new XDiceConfig(1001L, false, ConfigStep.BEGIN, 20, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE, RollerSelection.STANDARD),
+            1002L, new XDiceConfig(1002L, false, ConfigStep.BEGIN, 10, true, List.of(10,9,8,7), false, PlusBehaviour.AUTO_SUCCESS, ExplodeBehaviour.DOUBLE, List.of(10), CritFailBehaviour.ONE_NO_SUCCESSES, RollerSelection.STANDARD),
+            1003L, new XDiceConfig(1003L, false, ConfigStep.BEGIN, 10, true, List.of(10,9,8,7), false, PlusBehaviour.AUTO_SUCCESS, ExplodeBehaviour.DOUBLE, List.of(10), CritFailBehaviour.ONE_NO_SUCCESSES, RollerSelection.STANDARD),
+            1004L, new XDiceConfig(1004L, false, ConfigStep.BEGIN, 10, true, List.of(10,9,8,7), false, PlusBehaviour.AUTO_SUCCESS, ExplodeBehaviour.DOUBLE, List.of(10), CritFailBehaviour.ONE_NO_SUCCESSES, RollerSelection.STANDARD),
+            1005L, new XDiceConfig(1005L, false, ConfigStep.BEGIN, 20, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE, RollerSelection.STANDARD),
+            1006L, new XDiceConfig(1006L, false, ConfigStep.BEGIN, 6, true, List.of(6,5), false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.ONE_NO_SUCCESSES, RollerSelection.STANDARD),
+            1007L, new XDiceConfig(1007L, false, ConfigStep.BEGIN, 6, true, List.of(6,5), false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.ONE_NO_SUCCESSES, RollerSelection.STANDARD),
+            1008L, new XDiceConfig(1008L, false, ConfigStep.BEGIN, 20, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE, RollerSelection.STANDARD)
         );
     }
 
@@ -185,7 +180,7 @@ VALUES
         countBeforeResult.next();
         int countBefore = countBeforeResult.getInt(1);
 
-        XDiceConfig newConfig = new XDiceConfig(2001L, false, ConfigStep.BEGIN, 100, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE);
+        XDiceConfig newConfig = new XDiceConfig(2001L, false, ConfigStep.BEGIN, 100, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE, RollerSelection.STANDARD);
         testRepo.saveConfig(newConfig);
 
         Statement countAfterStatement = testDb.createStatement();
@@ -235,7 +230,7 @@ VALUES
         countBeforeResult.next();
         int countBefore = countBeforeResult.getInt(1);
 
-        XDiceConfig newConfig = new XDiceConfig(2001L, false, ConfigStep.BEGIN, 100, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE);
+        XDiceConfig newConfig = new XDiceConfig(2001L, false, ConfigStep.BEGIN, 100, false, null, false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, null, CritFailBehaviour.NONE, RollerSelection.STANDARD);
         testRepo.saveConfigDraft(newConfig);
 
         Statement countAfterStatement = testDb.createStatement();

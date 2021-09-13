@@ -1,4 +1,4 @@
-import net.xdice.Roller;
+import net.xdice.StandardRoller;
 import net.xdice.enums.*;
 import net.xdice.models.XDiceCommand;
 import net.xdice.models.XDiceConfig;
@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class RngTests {
-    private final XDiceConfig baseConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, false, Collections.emptyList(), false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.NONE);
-    private final Roller diceRoller = new Roller();
+    private final XDiceConfig baseConfig = XDiceConfig.getDefaultConfig(1);
+    private final StandardRoller diceRoller = new StandardRoller();
 
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 5, 100, 1000})
@@ -72,7 +72,7 @@ public class RngTests {
     @ParameterizedTest
     @ValueSource(ints = {1,2,3,4,5,6,7,8,9,10})
     void explodeOnDoubleModeAddsExtraSuccessForEachExplode(Integer numDice) {
-        XDiceConfig doubleConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, true, List.of(1), false, PlusBehaviour.IGNORE, ExplodeBehaviour.DOUBLE, List.of(1), CritFailBehaviour.NONE);
+        XDiceConfig doubleConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, true, List.of(1), false, PlusBehaviour.IGNORE, ExplodeBehaviour.DOUBLE, List.of(1), CritFailBehaviour.NONE, RollerSelection.STANDARD);
         XDiceCommand doubleCommand = new XDiceCommand(CommandType.DICE, numDice, 1, 0);
         String[] rolledDiceResult = diceRoller.rollDice(doubleCommand, doubleConfig).split(" ");
         int numberOfSuccesses = Integer.parseInt(rolledDiceResult[rolledDiceResult.length - 2]);
@@ -82,7 +82,7 @@ public class RngTests {
     @ParameterizedTest
     @ValueSource(ints = {1,2,3,4,5,6,7,8,9,10})
     void addTotalReturnsCorrectTotal (Integer numDice) {
-        XDiceConfig addTotalConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, false, Collections.emptyList(), true, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.NONE);
+        XDiceConfig addTotalConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, false, Collections.emptyList(), true, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.NONE, RollerSelection.STANDARD);
         XDiceCommand addTotalCommand = new XDiceCommand(CommandType.DICE, numDice, 1, 0);
         String[] rolledDiceResult = diceRoller.rollDice(addTotalCommand, addTotalConfig).split(" ");
         int total = Integer.parseInt(rolledDiceResult[rolledDiceResult.length - 1]);
@@ -92,7 +92,7 @@ public class RngTests {
     @ParameterizedTest
     @ValueSource(ints = {1,2,3,4,5,6,7,8,9,10})
     void plusBehaviourADDReturnsTotalPlusModifier (Integer modifier) {
-        XDiceConfig addTotalConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, false, Collections.emptyList(), true, PlusBehaviour.ADD, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.NONE);
+        XDiceConfig addTotalConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, false, Collections.emptyList(), true, PlusBehaviour.ADD, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.NONE, RollerSelection.STANDARD);
         XDiceCommand addTotalCommand = new XDiceCommand(CommandType.DICE, 0, 1, modifier);
         String[] rolledDiceResult = diceRoller.rollDice(addTotalCommand, addTotalConfig).split(" ");
         int total = Integer.parseInt(rolledDiceResult[rolledDiceResult.length - 1]);
@@ -102,7 +102,7 @@ public class RngTests {
     @ParameterizedTest
     @ValueSource(ints = {1,2,3,4,5,6,7,8,9,10})
     void plusBehaviourAUTO_SUCCESSReturnsSuccessesPlusModifier(Integer modifier) {
-        XDiceConfig doubleConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, true, List.of(1), false, PlusBehaviour.AUTO_SUCCESS, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.NONE);
+        XDiceConfig doubleConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, true, List.of(1), false, PlusBehaviour.AUTO_SUCCESS, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.NONE, RollerSelection.STANDARD);
         XDiceCommand doubleCommand = new XDiceCommand(CommandType.DICE, 0, 1, modifier);
         String[] rolledDiceResult = diceRoller.rollDice(doubleCommand, doubleConfig).split(" ");
         int numberOfSuccesses = Integer.parseInt(rolledDiceResult[rolledDiceResult.length - 2]);
@@ -112,7 +112,7 @@ public class RngTests {
     @ParameterizedTest
     @ValueSource(ints = {1,2,3,4,5,6,7,8,9,10})
     void critFailReturnsCorrectNumberOfFails (Integer numDice) {
-        XDiceConfig addTotalConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, true, List.of(2), false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.ONE_NO_SUCCESSES);
+        XDiceConfig addTotalConfig = new XDiceConfig(0, true, ConfigStep.BEGIN, 1, true, List.of(2), false, PlusBehaviour.IGNORE, ExplodeBehaviour.NONE, Collections.emptyList(), CritFailBehaviour.ONE_NO_SUCCESSES, RollerSelection.STANDARD);
         XDiceCommand addTotalCommand = new XDiceCommand(CommandType.DICE, numDice, 1, 0);
         String[] rolledDiceResult = diceRoller.rollDice(addTotalCommand, addTotalConfig).split(" ");
         int total = Integer.parseInt(rolledDiceResult[rolledDiceResult.length - 3]);
