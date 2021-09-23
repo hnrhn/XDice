@@ -11,12 +11,13 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HelpTextTests {
-    StandardHelpGenerator ai = new StandardHelpGenerator();
+    StandardHelpGenerator helpGenerator = new StandardHelpGenerator();
     XDiceConfig config = XDiceConfig.getDefaultConfig(1);
 
     @BeforeEach
@@ -26,15 +27,15 @@ public class HelpTextTests {
 
     @Test
     void placeholderLineIsSuccessfullyRemoved() {
-        assertFalse(ai.getHelp(config).contains("IF YOU ARE SEEING THIS LINE, THE DEVELOPER MESSED UP"));
+        assertFalse(helpGenerator.getHelp(config).contains("IF YOU ARE SEEING THIS LINE, THE DEVELOPER MESSED UP"));
     }
 
     @Test
     void basic() throws IOException, URISyntaxException {
-        var resourceFile = HelpTextTests.class.getResource("ExpectedHelpFiles/basic.txt").toURI();
+        var resourceFile = Objects.requireNonNull(HelpTextTests.class.getResource("ExpectedHelpFiles/basic.txt")).toURI();
         var expectedString = Files.readString(Path.of(resourceFile));
 
-        var result = ai.getHelp(config);
+        var result = helpGenerator.getHelp(config);
 
         assertEquals(expectedString, result);
     }
@@ -43,10 +44,10 @@ public class HelpTextTests {
     void addTotal() throws IOException, URISyntaxException {
         config.setAddTotal(true);
 
-        var resourceFile = HelpTextTests.class.getResource("ExpectedHelpFiles/add_total.txt").toURI();
+        var resourceFile = Objects.requireNonNull(HelpTextTests.class.getResource("ExpectedHelpFiles/add_total.txt")).toURI();
         var expectedString = Files.readString(Path.of(resourceFile));
 
-        var result = ai.getHelp(config);
+        var result = helpGenerator.getHelp(config);
 
         assertEquals(expectedString, result);
     }
@@ -56,10 +57,10 @@ public class HelpTextTests {
         config.setCountSuccesses(true);
         config.setSuccessOn(List.of(99));
 
-        var resourceFile = HelpTextTests.class.getResource("ExpectedHelpFiles/count_successes.txt").toURI();
+        var resourceFile = Objects.requireNonNull(HelpTextTests.class.getResource("ExpectedHelpFiles/count_successes.txt")).toURI();
         var expectedString = Files.readString(Path.of(resourceFile));
 
-        var result = ai.getHelp(config);
+        var result = helpGenerator.getHelp(config);
 
         assertEquals(expectedString, result);
     }
@@ -68,10 +69,10 @@ public class HelpTextTests {
     void critFail() throws IOException, URISyntaxException {
         config.setCritFailBehaviour(CritFailBehaviour.ONE_NO_SUCCESSES);
 
-        var resourceFile = HelpTextTests.class.getResource("ExpectedHelpFiles/crit_fail_one.txt").toURI();
+        var resourceFile = Objects.requireNonNull(HelpTextTests.class.getResource("ExpectedHelpFiles/crit_fail_one.txt")).toURI();
         var expectedString = Files.readString(Path.of(resourceFile));
 
-        var result = ai.getHelp(config);
+        var result = helpGenerator.getHelp(config);
 
         assertEquals(expectedString, result);
     }
@@ -81,10 +82,10 @@ public class HelpTextTests {
         config.setExplodeBehaviour(ExplodeBehaviour.DOUBLE);
         config.setExplodeOn(List.of(99));
 
-        var resourceFile = HelpTextTests.class.getResource("ExpectedHelpFiles/explode_double.txt").toURI();
+        var resourceFile = Objects.requireNonNull(HelpTextTests.class.getResource("ExpectedHelpFiles/explode_double.txt")).toURI();
         var expectedString = Files.readString(Path.of(resourceFile));
 
-        var result = ai.getHelp(config);
+        var result = helpGenerator.getHelp(config);
 
         assertEquals(expectedString, result);
     }
@@ -94,10 +95,10 @@ public class HelpTextTests {
         config.setExplodeBehaviour(ExplodeBehaviour.EXTRA);
         config.setExplodeOn(List.of(99));
 
-        var resourceFile = HelpTextTests.class.getResource("ExpectedHelpFiles/explode_extra.txt").toURI();
+        var resourceFile = Objects.requireNonNull(HelpTextTests.class.getResource("ExpectedHelpFiles/explode_extra.txt")).toURI();
         var expectedString = Files.readString(Path.of(resourceFile));
 
-        var result = ai.getHelp(config);
+        var result = helpGenerator.getHelp(config);
 
         assertEquals(expectedString, result);
     }
@@ -107,10 +108,10 @@ public class HelpTextTests {
         config.setExplodeBehaviour(ExplodeBehaviour.EXTRA_CHAIN);
         config.setExplodeOn(List.of(99));
 
-        var resourceFile = HelpTextTests.class.getResource("ExpectedHelpFiles/explode_extra_chain.txt").toURI();
+        var resourceFile = Objects.requireNonNull(HelpTextTests.class.getResource("ExpectedHelpFiles/explode_extra_chain.txt")).toURI();
         var expectedString = Files.readString(Path.of(resourceFile));
 
-        var result = ai.getHelp(config);
+        var result = helpGenerator.getHelp(config);
 
         assertEquals(expectedString, result);
     }
@@ -119,10 +120,10 @@ public class HelpTextTests {
     void plusAdd() throws IOException, URISyntaxException {
         config.setPlusBehaviour(PlusBehaviour.ADD);
 
-        var resourceFile = HelpTextTests.class.getResource("ExpectedHelpFiles/plus_add.txt").toURI();
+        var resourceFile = Objects.requireNonNull(HelpTextTests.class.getResource("ExpectedHelpFiles/plus_add.txt")).toURI();
         var expectedString = Files.readString(Path.of(resourceFile));
 
-        var result = ai.getHelp(config);
+        var result = helpGenerator.getHelp(config);
 
         assertEquals(expectedString, result);
     }
@@ -131,10 +132,10 @@ public class HelpTextTests {
     void plusAutoSuccess() throws IOException, URISyntaxException {
         config.setPlusBehaviour(PlusBehaviour.AUTO_SUCCESS);
 
-        var resourceFile = HelpTextTests.class.getResource("ExpectedHelpFiles/plus_auto.txt").toURI();
+        var resourceFile = Objects.requireNonNull(HelpTextTests.class.getResource("ExpectedHelpFiles/plus_auto.txt")).toURI();
         var expectedString = Files.readString(Path.of(resourceFile));
 
-        var result = ai.getHelp(config);
+        var result = helpGenerator.getHelp(config);
 
         assertEquals(expectedString, result);
     }

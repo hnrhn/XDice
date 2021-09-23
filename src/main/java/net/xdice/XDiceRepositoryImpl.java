@@ -157,6 +157,7 @@ public class XDiceRepositoryImpl implements XDiceRepository {
             "VALUES (?,?,?,?,?,?,?,?,?,?,?,?) " +
             "ON CONFLICT(GuildId) DO " +
             "UPDATE SET " +
+            "CurrentConfigStep = excluded.CurrentConfigStep," +
             "DefaultDice = excluded.DefaultDice, " +
             "CountSuccesses = excluded.CountSuccesses, " +
             "SuccessOn = excluded.SuccessOn, " +
@@ -168,14 +169,14 @@ public class XDiceRepositoryImpl implements XDiceRepository {
             "RollerId = excluded.RollerId");
         upsertStatement.setLong(1, config.getGuildId());
         upsertStatement.setInt(2, 0);
-        upsertStatement.setInt(3, 1);
+        upsertStatement.setInt(3, ConfigStepConverter.enumToInt(config.getCurrentConfigStep()));
         upsertStatement.setInt(4, config.getDefaultDice());
         upsertStatement.setInt(5, config.isCountSuccesses() ? 1 : 0);
-        upsertStatement.setString(6, config.getSuccessOn() != null ? Stream.of(config.getSuccessOn()).map(String::valueOf).collect(Collectors.joining(",")) : null);
+        upsertStatement.setString(6, config.getSuccessOn() != null ? Stream.of(config.getSuccessOn()).map(String::valueOf).collect(Collectors.joining(",")).replace("[", "").replace("]", "").replaceAll(" ", "") : null);
         upsertStatement.setInt(7, config.isAddTotal() ? 1 : 0);
         upsertStatement.setInt(8, PlusBehaviourConverter.enumToInt(config.getPlusBehaviour()));
         upsertStatement.setInt(9, ExplodeBehaviourConverter.enumToInt(config.getExplodeBehaviour()));
-        upsertStatement.setString(10, config.getExplodeOn() != null ? Stream.of(config.getExplodeOn()).map(String::valueOf).collect(Collectors.joining(",")) : null);
+        upsertStatement.setString(10, config.getExplodeOn() != null ? Stream.of(config.getExplodeOn()).map(String::valueOf).collect(Collectors.joining(",")).replace("[", "").replace("]", "").replaceAll(" ", "") : null);
         upsertStatement.setInt(11, CritFailBehaviourConverter.enumToInt(config.getCritFailBehaviour()));
         upsertStatement.setInt(12, RollerSelectionConverter.enumToInt(config.getRollerSelection()));
         upsertStatement.executeUpdate();

@@ -64,23 +64,27 @@ public class DiscordConfigurator {
             return switch (currentStep) {
                 case BEGIN -> {
                     config.setCurrentConfigStep(ConfigStep.DEFAULT_DICE);
+                    configRepository.saveConfig(config);
                     yield MessageFormat.format(ConfigInstructions.begin, new Random().nextInt(9000) + 1000, ConfigStep.DEFAULT_DICE.toString().toLowerCase());
                 }
                 case DEFAULT_DICE -> {
                     String selection = commandParam.replace("d", ""); // In case anyone types "d20" instead of "20".
                     config.setDefaultDice(Integer.parseInt(selection));
                     config.setCurrentConfigStep(ConfigStep.COUNT_SUCCESSES);
+                    configRepository.saveConfig(config);
                     yield MessageFormat.format(ConfigInstructions.countSuccesses, selection);
                 }
                 case COUNT_SUCCESSES -> switch (commandParam) {
                     case "yes" -> {
                         config.setCountSuccesses(true);
                         config.setCurrentConfigStep(ConfigStep.SUCCESS_ON);
+                        configRepository.saveConfig(config);
                         yield MessageFormat.format(ConfigInstructions.successOn, ConfigStep.SUCCESS_ON.toString().toLowerCase());
                     }
                     case "no" -> {
                         config.setCountSuccesses(false);
                         config.setCurrentConfigStep(ConfigStep.ADD_TOTAL);
+                        configRepository.saveConfig(config);
                         yield MessageFormat.format(ConfigInstructions.addTotal, ConfigStep.ADD_TOTAL.toString().toLowerCase());
                     }
                     default -> throw new IllegalStateException("Unexpected value: " + commandParam);
@@ -88,18 +92,20 @@ public class DiscordConfigurator {
                 case SUCCESS_ON -> {
                     config.setSuccessOn(Arrays.stream(split).skip(1).map(Integer::parseInt).collect(Collectors.toList()));
                     config.setCurrentConfigStep(ConfigStep.PLUS_BEHAVIOUR);
-
+                    configRepository.saveConfig(config);
                     yield MessageFormat.format("Nice!\n\n" + ConfigInstructions.plusBehaviour, ConfigStep.PLUS_BEHAVIOUR.toString().toLowerCase(), "~~", "");
                 }
                 case ADD_TOTAL -> switch (commandParam) {
                     case "yes" -> {
                         config.setAddTotal(true);
                         config.setCurrentConfigStep(ConfigStep.PLUS_BEHAVIOUR);
+                        configRepository.saveConfig(config);
                         yield "Nice! A big ol' YES on adding up your totals. You got it!\n\n" + MessageFormat.format(ConfigInstructions.plusBehaviour, ConfigStep.PLUS_BEHAVIOUR.toString().toLowerCase(), "", "~~");
                     }
                     case "no" -> {
                         config.setAddTotal(false);
                         config.setCurrentConfigStep(ConfigStep.EXPLODE_BEHAVIOUR);
+                        configRepository.saveConfig(config);
                         yield "No assistance needed on the ol' numbers, you've got it!\n\n" + MessageFormat.format(ConfigInstructions.explodeBehaviour, ConfigStep.EXPLODE_BEHAVIOUR.toString().toLowerCase(), config.isCountSuccesses() ? "" : "~~");
                     }
                     default -> throw new IllegalStateException();
@@ -108,7 +114,7 @@ public class DiscordConfigurator {
                     int chosenNumber = Integer.parseInt(commandParam);
                     config.setPlusBehaviour(PlusBehaviourConverter.intToEnum(chosenNumber));
                     config.setCurrentConfigStep(ConfigStep.EXPLODE_BEHAVIOUR);
-
+                    configRepository.saveConfig(config);
                     yield "Done and done!\n\n" + MessageFormat.format(ConfigInstructions.explodeBehaviour, ConfigStep.EXPLODE_BEHAVIOUR.toString().toLowerCase(), config.isCountSuccesses() ? "" : "~~");
                 }
                 case EXPLODE_BEHAVIOUR -> {
@@ -119,16 +125,19 @@ public class DiscordConfigurator {
                     if (chosenEnum != ExplodeBehaviour.NONE)
                     {
                         config.setCurrentConfigStep(ConfigStep.EXPLODE_ON);
+                        configRepository.saveConfig(config);
                         yield MessageFormat.format(ConfigInstructions.explodeOn, ConfigStep.EXPLODE_ON.toString().toLowerCase());
                     }
 
                     if (config.isCountSuccesses())
                     {
                         config.setCurrentConfigStep(ConfigStep.CRIT_FAIL_BEHAVIOUR);
+                        configRepository.saveConfig(config);
                         yield MessageFormat.format(ConfigInstructions.critFail, ConfigStep.CRIT_FAIL_BEHAVIOUR.toString().toLowerCase());
                     }
 
                     config.setCurrentConfigStep(ConfigStep.CONFIRM);
+                    configRepository.saveConfig(config);
                     yield MessageFormat.format(ConfigInstructions.finalConfirmation, ConfigStep.CONFIRM.toString().toLowerCase(), helpGenerator.getHelp(config));
                 }
                 case EXPLODE_ON -> {
@@ -138,6 +147,7 @@ public class DiscordConfigurator {
                     }
                     config.setExplodeOn(args);
                     config.setCurrentConfigStep(ConfigStep.CRIT_FAIL_BEHAVIOUR);
+                    configRepository.saveConfig(config);
                     yield MessageFormat.format(ConfigInstructions.critFail, ConfigStep.CRIT_FAIL_BEHAVIOUR.toString().toLowerCase());
                 }
                 case CRIT_FAIL_BEHAVIOUR -> {
@@ -148,12 +158,13 @@ public class DiscordConfigurator {
                     }
 
                     config.setCurrentConfigStep(ConfigStep.CONFIRM);
+                    configRepository.saveConfig(config);
                     yield MessageFormat.format(ConfigInstructions.finalConfirmation, ConfigStep.CONFIRM.toString().toLowerCase(), helpGenerator.getHelp(config));
                 }
                 case CONFIRM -> {
-                    configRepository.saveConfig(config);
                     config.setCurrentConfigStep(ConfigStep.BEGIN);
                     config.setConfigMode(false);
+                    configRepository.saveConfig(config);
                     yield ConfigInstructions.signOff;
                 }
             };
