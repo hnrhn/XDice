@@ -1,0 +1,316 @@
+html {
+  background-color: #00002c;
+  font-family: "Courier New", Courier, monospace;
+  color: #dddddd;
+}
+
+body {
+  margin: 0;
+}
+
+nav {
+  width: 100vw;
+  background-color: #000000;
+  height: 4rem;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  border: 0;
+  display: flex;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 4rem;
+}
+
+a {
+  color: #dddddd;
+}
+a:visited {
+  color: #dddddd;
+}
+
+li {
+  list-style: none;
+}
+li > ul {
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  margin-bottom: 1rem;
+}
+
+#columnContainer {
+  display: flex;
+  margin: auto;
+  width: 1300px;
+  justify-content: space-between;
+}
+
+#chatBox {
+  width: 800px;
+  height: 600px;
+  border: 1px solid #dddddd;
+  margin: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 0.5rem;
+  overflow-y: auto;
+}
+
+#newMessageControls {
+  justify-content: space-between !important;
+  margin-top: 5px;
+}
+
+#newUsernameControls {
+  padding: 1rem 0;
+  background-color: cornflowerblue;
+  color: #111111;
+}
+
+#currentUsername {
+  padding-left: 0.5rem;
+  padding-right: 0.25rem;
+  margin-right: 0.25rem;
+  line-height: 2rem;
+  user-select: none;
+}
+#currentUsername:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#newUsernameLabel {
+  padding: 0 0.5rem 0 0.75rem;
+}
+
+#newMessageInput,
+#newUsernameInput {
+  flex: 9;
+  height: 2rem;
+  font-size: 1.4rem;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: "Courier New", Courier, monospace;
+}
+
+#sendMessageButton,
+#submitNewUsernameButton {
+  flex: 1;
+  height: 2rem;
+  display: inline-block;
+  border: none;
+  margin: 0;
+  text-decoration: none;
+  background: #0069ed;
+  color: #dddddd;
+  cursor: pointer;
+}
+#sendMessageButton:hover, #sendMessageButton:focus,
+#submitNewUsernameButton:hover,
+#submitNewUsernameButton:focus {
+  background: #0053ba;
+}
+#sendMessageButton:focus,
+#submitNewUsernameButton:focus {
+  outline: 1px solid #dddddd;
+  outline-offset: -4px;
+}
+#sendMessageButton:active,
+#submitNewUsernameButton:active {
+  transform: scale(0.99);
+}
+
+.sidebar {
+  width: 200px;
+  border: 1px solid #dddddd;
+  height: 616px;
+  position: relative;
+}
+.sidebar ul {
+  margin-left: 0.5rem;
+  padding: 0;
+}
+.sidebar h2 {
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+.sidebar hr {
+  margin: 0 0.5rem 0 0.5rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.message {
+  display: flex;
+  padding: 0 2px;
+}
+
+.username {
+  flex: 2;
+  font-weight: bold;
+}
+
+.messageText {
+  flex: 8;
+}
+
+.highlighted {
+  background-color: cornflowerblue;
+  color: #111111;
+}
+
+.centered {
+  margin: auto;
+  max-width: 818px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centeredText {
+  text-align: center;
+}
+
+.chatContainer {
+  display: flex;
+  padding: 2px;
+  border-bottom: 1px solid #444444;
+}
+
+.chatUser {
+  flex: 2;
+}
+
+.chatMessage {
+  flex: 8;
+}
+
+#currentUsername:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.activeUsernameButton {
+  background-color: cornflowerblue;
+  color: #111111;
+}
+
+.navLink {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  font-size: 1.6rem;
+  padding: 0 1.5rem;
+  height: 100%;
+  line-height: 1.2rem;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  background-color: #0053ba;
+  cursor: pointer;
+}
+
+.navLink:first-of-type {
+  margin-left: 1rem;
+  border-right: 1px solid #444444;
+}
+
+.neonBorder_DEP {
+  border: 3px solid white;
+  border-radius: 2px;
+  --box-shadow-color: white;
+  --box-shadow-blur: 8px;
+  --box-shadow-spread: 5px;
+  box-shadow: 0 0 var(--box-shadow-blur) var(--box-shadow-spread) var(--box-shadow-color) inset, 0 0 var(--box-shadow-blur) var(--box-shadow-spread) var(--box-shadow-color);
+}
+
+.neonBorder_DEP:hover {
+  --box-shadow-spread: 7px;
+}
+
+.parallelogram {
+  width: 300px;
+  height: 100px;
+  display: inline-block;
+  transform: skewX(-35deg);
+  text-align: center;
+  line-height: 100px;
+  border: 1px solid gray;
+}
+
+.parallelogram > div {
+  transform: skewX(35deg);
+}
+
+.parallelogram:hover {
+  cursor: pointer;
+  border-color: white;
+}
+
+.fullWidthButton {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.fullWidthInput {
+  width: 100%;
+}
+
+.lockedToBottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.redButton {
+  background-color: darkred;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.redButton:hover {
+  cursor: pointer;
+  background-color: red;
+}
+
+#errorPopup {
+  background-color: #6b0000;
+  color: white;
+  width: 30rem;
+  position: fixed;
+  right: 2rem;
+  top: 3rem;
+  padding: 1rem;
+  min-height: 3rem;
+  border-radius: 1rem;
+  border: 1px solid red;
+}
+
+.fakeLink:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.fixedToBottom {
+  position: absolute;
+  bottom: 0;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,38 @@
+**= XDice v3.2.1 - [Forbidden Lands Edition] =**
+------------------------------------------------------------------------------------------------------------------------
+
+_XDice - Forbidden Lands Edition_ listens for the following activation phrases:
+
+**Forbidden Lands Roll**
+`/r BASE SKILL GEAR [ARTIFACT]`
+    - BASE, SKILL, and GEAR are mandatory. If you wish to roll 0, you must enter that as a value.
+    - ARTIFACT is optional, and can be one of the following options:
+        - `m` or `8` or `d8`
+        - `e` or `10` or `d10`
+        - `l` or `12` or `d12`
+    If ARTIFACT is excluded or is anything other than the above options, it defaults to 0
+Example: `/r 3 0 2` - Rolls 3 Base dice, 0 Skill dice, 2 Gear dice, and 0 Artifact dice.
+Example: `/r 1 2 3 l` - Rolls 1 Base die, 2 Skill dice, 3 Gear dice, and a Legendary artifact die (d12)
+
+**Push**
+`/push`
+Re-rolls any dice from your previous roll which were not :crossed_swords: or :skull: and outputs the new total roll.
+
+**Pride**
+`/pride`
+Works like **Push**, but also adds your Pride die (d12) to the new roll
+
+**Initiative Deck**
+`/newdeck`
+Creates and shuffles a new deck of ten Initiative cards numbered 1-10.
+`/draw`
+Draw one of the cards from the Initiative Deck.
+
+**Other dice types**
+To roll dice outside of the Forbidden Lands format, use the template XdY
+Example: `/r 5d20` - this will roll 5 d20s
+`/coin`
+Output either Heads or Tails
+
+`/help`
+Output this message again.

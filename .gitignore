@@ -1,18 +1,2 @@
-.idea/
-venv/
-bin/
-obj/
 
-.gradle/
-
-build/
-
-gradle/
-
-gradlew
-
-gradlew.bat
-
-configs/
-
-prod.db
+web/.idea/

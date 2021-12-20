@@ -1,0 +1,10 @@
+All done! Above is the output of the `/xdice help` command, which gives you a complete overview of the settings you have enabled on your server.
+
+Look over it, and if you're happy with everything, send the message `/xdice config confirm`, and you'll be ready to play! If not, send `/xdice config cancel` to shut me down and exit Configuration Mode so you can start over.
+
+And remember, if you ever need this help information again, just send XDice the message `/xdice help`.
+
+Are you happy with this configuration?
+`/xdice config confirm` to save and exit configuration mode.
+or
+~~`/xdice config cancel` to discard all changes and exit configuration mode.~~ The Creator appeared to me in a dream, riding an electric sheep, and told me he broke this, he promises to bring it back soon, but that for now youll need to start over.
