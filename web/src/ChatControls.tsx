@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {sendChatMessage} from "./XDiceSocket";
 import NewUsernameControls from "./NewUsernameControls";
 import {ChatControlsProps} from "./Interfaces";
@@ -7,6 +7,10 @@ export default function ChatControls(props: ChatControlsProps) {
     const [sendActive, setSendActive] = useState(true);
     const [message, setMessage] = useState("");
     const [newUsernameHidden, setNewUsernameHidden] = useState(true);
+
+    useEffect(() => {
+        document.getElementById("newMessageInput")!.focus();
+    })
 
     const checkForSubmit = (e: React.KeyboardEvent) => e.code === "Enter";
 
