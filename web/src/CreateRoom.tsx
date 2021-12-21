@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid,no-script-url */
 import React, {useState} from "react";
 import {openSocket, sendCreateRoomMessage, socket} from "./XDiceSocket";
+import {keyWasEnter} from "./utils";
 
 export function CreateRoom(props: { changePageTo: Function, createJoinChooserPath: string, setWsOpen: Function, setRoomCode: Function, onError: Function }) {
     const [username, setUsername] = useState("");
@@ -9,6 +10,14 @@ export function CreateRoom(props: { changePageTo: Function, createJoinChooserPat
     const [password, setPassword] = useState("");
     const [showPasswordField, setShowPasswordField] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+
+    async function validateAndSend() {
+        if (username === "" || roomName === "") {
+            return;
+        }
+
+        await sendCreateRequestToServer();
+    }
 
     async function sendCreateRequestToServer() {
         if (submitting) {
@@ -43,7 +52,7 @@ export function CreateRoom(props: { changePageTo: Function, createJoinChooserPat
                                 <label htmlFor={"createUsername"}>Choose a Username:</label>
                             </td>
                             <td>
-                                <input id={"createUsername"} className={"fullWidthInput"} type={"text"} onChange={e => setUsername(e.currentTarget.value)} />
+                                <input id={"createUsername"} className={"fullWidthInput"} type={"text"} onChange={e => setUsername(e.currentTarget.value)} onKeyUp={e => keyWasEnter(e) && validateAndSend()} />
                             </td>
                         </tr>
                         <tr>
@@ -51,7 +60,7 @@ export function CreateRoom(props: { changePageTo: Function, createJoinChooserPat
                                 <label htmlFor={"createRoomName"}>Choose a Room Name:</label>
                             </td>
                             <td>
-                                <input id={"createRoomName"} className={"fullWidthInput"} type={"text"} onChange={e => setRoomName(e.currentTarget.value)} />
+                                <input id={"createRoomName"} className={"fullWidthInput"} type={"text"} onChange={e => setRoomName(e.currentTarget.value)} onKeyUp={e => keyWasEnter(e) && validateAndSend()} />
                             </td>
                         </tr>
                         {showPasswordField
@@ -61,7 +70,7 @@ export function CreateRoom(props: { changePageTo: Function, createJoinChooserPat
                                         <label htmlFor={"createPassword"}>Password:</label>
                                     </td>
                                     <td>
-                                        <input id={"createPassword"} type={"text"} onChange={e => setPassword(e.currentTarget.value)} /> <a href="#" onClick={() => setShowPasswordField(false)}>X</a>
+                                        <input id={"createPassword"} type={"text"} onChange={e => setPassword(e.currentTarget.value)} onKeyUp={e => keyWasEnter(e) && validateAndSend()} /> <a href="#" onClick={() => setShowPasswordField(false)}>X</a>
                                     </td>
                                 </tr>
                             )

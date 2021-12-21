@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {sendChatMessage} from "./XDiceSocket";
 import NewUsernameControls from "./NewUsernameControls";
 import {ChatControlsProps} from "./Interfaces";
+import {keyWasEnter} from "./utils";
 
 export default function ChatControls(props: ChatControlsProps) {
     const [sendActive, setSendActive] = useState(true);
@@ -11,8 +12,6 @@ export default function ChatControls(props: ChatControlsProps) {
     useEffect(() => {
         document.getElementById("newMessageInput")!.focus();
     })
-
-    const checkForSubmit = (e: React.KeyboardEvent) => e.code === "Enter";
 
     function sendToXDice() {
         if (!sendActive) {
@@ -36,7 +35,7 @@ export default function ChatControls(props: ChatControlsProps) {
         <>
             <div id="newMessageControls" className="centered">
                 <span id="currentUsername" className={newUsernameHidden ? "" : "activeUsernameButton"} onClick={() => setNewUsernameHidden(!newUsernameHidden)}>@{props.username}</span>
-                <input id="newMessageInput" aria-label="Roll string input" value={message} onChange={e => setMessage(e.currentTarget.value)} onKeyUp={e => checkForSubmit(e) && sendToXDice()} />
+                <input id="newMessageInput" aria-label="Roll string input" value={message} onChange={e => setMessage(e.currentTarget.value)} onKeyUp={e => keyWasEnter(e) && sendToXDice()} />
                 <button id="sendMessageButton" type="submit" onClick={sendToXDice}>Enter</button>
             </div>
             {

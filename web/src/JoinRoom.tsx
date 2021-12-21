@@ -2,12 +2,21 @@
 /* eslint-disable no-script-url,jsx-a11y/anchor-is-valid */
 import React, {useState} from "react";
 import {openSocket, sendJoinRoomMessage, socket} from "./XDiceSocket";
+import {keyWasEnter} from "./utils";
 
 export function JoinRoom(props: { changePageTo: Function, createJoinChooserPath: string, setWsOpen: Function, setRoomCode: Function, onError: Function }) {
     const [username, setUsername] = useState("");
     const [roomName, setRoomName] = useState("");
     const [password, setPassword] = useState("");
     const [submitting, setSubmitting] = useState(false);
+
+    async function validateAndSend() {
+        if (username === "" || roomName === "") {
+            return;
+        }
+
+        await sendJoinRequestToServer();
+    }
 
     async function sendJoinRequestToServer() {
         if (submitting) {
@@ -42,7 +51,7 @@ export function JoinRoom(props: { changePageTo: Function, createJoinChooserPath:
                                 <label htmlFor={"joinUsername"}>Your username:</label>
                             </td>
                             <td>
-                                <input id={"joinUsername"} className={"fullWidthInput"} type={"text"} onChange={e => setUsername(e.currentTarget.value)} />
+                                <input id={"joinUsername"} className={"fullWidthInput"} type={"text"} onChange={e => setUsername(e.currentTarget.value)} onKeyUp={e => keyWasEnter(e) && validateAndSend()} />
                             </td>
                         </tr>
                         <tr>
@@ -50,7 +59,7 @@ export function JoinRoom(props: { changePageTo: Function, createJoinChooserPath:
                                 <label htmlFor={"joinRoomName"}>Room Code:</label>
                             </td>
                             <td>
-                                <input id={"joinRoomName"} className={"fullWidthInput"} type={"text"} onChange={e => setRoomName(e.currentTarget.value)} />
+                                <input id={"joinRoomName"} className={"fullWidthInput"} type={"text"} onChange={e => setRoomName(e.currentTarget.value)} onKeyUp={e => keyWasEnter(e) && validateAndSend()} />
                             </td>
                         </tr>
                         <tr>
@@ -58,7 +67,7 @@ export function JoinRoom(props: { changePageTo: Function, createJoinChooserPath:
                                 <label htmlFor={"joinPassword"}>Password (optional):</label>
                             </td>
                             <td>
-                                <input id={"joinPassword"} className={"fullWidthInput"} type={"text"} onChange={e => setPassword(e.currentTarget.value)} />
+                                <input id={"joinPassword"} className={"fullWidthInput"} type={"text"} onChange={e => setPassword(e.currentTarget.value)} onKeyUp={e => keyWasEnter(e) && validateAndSend()} />
                             </td>
                         </tr>
                     </tbody>
