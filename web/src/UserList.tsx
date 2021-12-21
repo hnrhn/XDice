@@ -8,7 +8,7 @@ export default function UserList(props: { users: User[] }) {
             <h2>Users</h2>
             <hr />
             <ul id="userList">
-                {props.users.filter(u => !u.isHidden).map(u => <li key={u.userId}>{u.username}</li>)}
+                {props.users.filter(u => !u.isHidden).map(u => <li key={u.userId}>{u.username}{u.isOwner ? " *" : ""}</li>)}
             </ul>
             <button className={"fullWidthButton lockedToBottom redButton"} onClick={closeSocket}>Leave Room</button>
         </div>
