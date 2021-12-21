@@ -11,11 +11,20 @@ public class User {
     private String userId;
     private String username;
     private boolean isOwner;
+    private boolean isHidden;
 
     public User(String userId, String username, boolean isOwner) {
         this.userId = userId;
         this.username = username;
         this.isOwner = isOwner;
+        this.isHidden = false;
+    }
+
+    public User(String userId, String username, boolean isOwner, boolean isHidden) {
+        this.userId = userId;
+        this.username = username;
+        this.isOwner = isOwner;
+        this.isHidden = isHidden;
     }
 
     public String getUserId() {
@@ -38,8 +47,16 @@ public class User {
         return this.isOwner;
     }
 
+    public boolean getIsHidden() {
+        return this.isHidden;
+    }
+
     public void setOwner(boolean owner) {
         this.isOwner = owner;
+    }
+
+    public void setIsHidden(boolean hiddenStatus) {
+        this.isHidden = hiddenStatus;
     }
 
     public static User fromJsonString(String jsonString) throws IOException {

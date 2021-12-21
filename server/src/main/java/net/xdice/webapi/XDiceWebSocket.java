@@ -44,10 +44,10 @@ public class XDiceWebSocket {
         var room = rooms.get(link.getRoomCode());
 
         room.deleteSession(session);
-        room.deleteUser(link.getUserId());
+        room.deactivateUser(link.getUserId());
         sessionToUserLinks.remove(sessionId);
 
-        if (room.getUsers().size() < 1) {
+        if (room.getUsers().stream().allMatch(User::getIsHidden)) {
             rooms.remove(link.getRoomCode());
         }
 

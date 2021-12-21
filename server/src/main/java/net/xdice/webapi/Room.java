@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Room {
     private static final JsonAdapter<Room> jsonAdapter = new Moshi.Builder().build().adapter(Room.class);
+    private static final User xDiceUser = new User("XDice", "XDice", false, true);
 
     private String roomCode;
     private String ownerId;
@@ -19,6 +20,10 @@ public class Room {
 
     private transient final List<Session> sessions = new ArrayList<>();
 
+    public Room() {
+        users.add(xDiceUser);
+    }
+
     public void addUserIfNotExists(User newUser) {
         if (this.users.stream().noneMatch(u -> u.getUserId().equals(newUser.getUserId()))) {
             this.users.add(newUser);
@@ -26,14 +31,14 @@ public class Room {
         }
     }
 
-    public void deleteUser(String userId) {
+    public void deactivateUser(String userId) {
         User toRemove = users.stream().filter(u -> u.getUserId().equals(userId)).findFirst().orElse(null);
 
         if (toRemove == null) {
             return;
         }
 
-        this.users.remove(toRemove);
+        toRemove.setIsHidden(true);
     }
 
     public String getRoomCode() {

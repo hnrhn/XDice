@@ -56,7 +56,8 @@ export interface RoomCreatedJoined {
 export interface User {
     userId: string,
     username: string,
-    isOwner: boolean
+    isOwner: boolean,
+    isHidden: boolean
 }
 
 export interface ErrorResponse {
