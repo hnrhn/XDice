@@ -69,9 +69,9 @@ public class XDiceRepositoryImpl implements XDiceRepository {
         ResultSet results = rollStatement.executeQuery();
 
         return new FLResult(
-            Arrays.stream(results.getString("Base").split(",")).map(Integer::parseInt).collect(Collectors.toList()),
-            Arrays.stream(results.getString("Skill").split(",")).map(Integer::parseInt).collect(Collectors.toList()),
-            Arrays.stream(results.getString("Gear").split(",")).map(Integer::parseInt).collect(Collectors.toList()),
+            results.getString("Base") != null ? Arrays.stream(results.getString("Base").split(",")).map(Integer::parseInt).collect(Collectors.toList()) : null,
+            results.getString("Skill") != null ? Arrays.stream(results.getString("Skill").split(",")).map(Integer::parseInt).collect(Collectors.toList()) : null,
+            results.getString("Gear") != null ? Arrays.stream(results.getString("Gear").split(",")).map(Integer::parseInt).collect(Collectors.toList()) : null,
             results.getInt("ArtifactType"),
             results.getString("Artifact") != null ? Arrays.stream(results.getString("Artifact").split(",")).map(Integer::parseInt).collect(Collectors.toList()) : null,
             results.getString("Pride") != null ? Arrays.stream(results.getString("Pride").split(",")).map(Integer::parseInt).collect(Collectors.toList()) : null,
@@ -92,24 +92,43 @@ public class XDiceRepositoryImpl implements XDiceRepository {
             "Pride = excluded.Pride, " +
             "Pushed = excluded.Pushed");
         upsert.setString(1, userId);
-        upsert.setString(2, roll.getBaseResult().toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
-        upsert.setString(3, roll.getSkillResult().toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
-        upsert.setString(4, roll.getGearResult().toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
+
+        if (roll.getBaseResult().size() == 0) {
+            upsert.setNull(2, Types.VARCHAR);
+        } else {
+            upsert.setString(2, roll.getBaseResult().toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
+        }
+
+        if (roll.getSkillResult().size() == 0) {
+            upsert.setNull(3, Types.VARCHAR);
+        } else {
+            upsert.setString(3, roll.getSkillResult().toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
+        }
+
+        if (roll.getGearResult().size() == 0) {
+            upsert.setNull(4, Types.VARCHAR);
+        } else {
+            upsert.setString(4, roll.getGearResult().toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
+        }
+
         if (roll.getArtifactDieType() == null) {
             upsert.setNull(5, Types.INTEGER);
         } else {
             upsert.setInt(5, roll.getArtifactDieType());
         }
+
         if (roll.getArtifactResult().size() != 0) {
             upsert.setString(6, roll.getArtifactResult().toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
         } else {
             upsert.setNull(6, Types.VARCHAR);
         }
+
         if (roll.getPrideResult().size() != 0) {
             upsert.setString(7, roll.getPrideResult().toString().replace("[", "").replace("]", "").replaceAll(" ", ""));
         } else {
             upsert.setNull(7, Types.VARCHAR);
         }
+
         upsert.setBoolean(8, isPush);
 
         upsert.executeUpdate();
