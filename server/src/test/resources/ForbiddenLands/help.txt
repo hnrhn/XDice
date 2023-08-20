@@ -1,4 +1,4 @@
-**= XDice v3.2.4 - [Forbidden Lands Edition] =**
+**= XDice v3.2.5 - [Forbidden Lands Edition] =**
 ------------------------------------------------------------------------------------------------------------------------
 
 _XDice - Forbidden Lands Edition_ listens for the following activation phrases:
