@@ -67,6 +67,11 @@ public class StandardParser implements XDiceParser {
             return command;
         }
 
+        if (!lowerCaseCommand.contains("xdice") && !lowerCaseCommand.contains("dicebot")) {
+            command.setCommandType(CommandType.INVALID);
+            return command;
+        }
+
         Matcher wtfMatcher = wtfPattern.matcher(lowerCaseCommand);
         if (wtfMatcher.find()) {
             command.setCommandType(CommandType.WTF);

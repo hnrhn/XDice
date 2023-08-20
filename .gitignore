@@ -1,2 +1,4 @@
 
 web/.idea/
+.idea
+server/prod*.db

@@ -37,8 +37,7 @@ public class XDiceRepositoryImpl implements XDiceRepository {
 
         ResultSet results = statement.executeQuery();
         if (!results.next()){
-            return XDiceConfig.getDefaultConfig(guildId);   // TODO: URGENT - Remove this ASAP.
-            //throw new SQLException("No Configuration found for guild " + guildId);  // TODO: By rights this shouldn't be a SQLException at all.
+            throw new SQLException("No Configuration found for guild " + guildId);  // TODO: By rights this shouldn't be a SQLException at all.
         }
 
         String nullableSuccessOn = results.getString("SuccessOn");
