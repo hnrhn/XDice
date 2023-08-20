@@ -25,8 +25,19 @@ public class DiscordActions {
             return;
         }
 
+        for (Server server: servers) {
+            System.out.println("Logged in to server: " + server);
+        }
+
+        HashSet<Server> connectedServers = new HashSet<>(servers);
+        Set<String> serverIds = connectedServers.stream().map(DiscordEntity::getIdAsString).collect(Collectors.toSet());
+
         // Validate that a config for each ID can be loaded
         for (String guildId: knownConfigs) {
+            if (!serverIds.contains(guildId)) {
+                continue;
+            }
+
             try {
                 DIContainer.getRepository().getConfig(guildId);
                 System.out.println("Config found for guild " + guildId);
@@ -36,12 +47,10 @@ public class DiscordActions {
             }
         }
 
-        HashSet<Server> connectedServers = new HashSet<>(servers);
-        Set<Long> serverIds = connectedServers.stream().map(DiscordEntity::getId).collect(Collectors.toSet());
+        // Create a new config for any servers which are not in the DB
         serverIds.removeAll(knownConfigs);
-
-        for (long serverId: serverIds) {
-            Server matchingServer = connectedServers.stream().filter(server -> server.getId() == serverId).findFirst().orElseThrow();
+        for (String serverId: serverIds) {
+            Server matchingServer = connectedServers.stream().filter(server -> server.getIdAsString().equals(serverId)).findFirst().orElseThrow();
             onJoinGuild(matchingServer);
         }
 
@@ -50,7 +59,7 @@ public class DiscordActions {
 
     public static void onJoinGuild(Server server) {
         try {
-            if (DIContainer.getRepository().getKnownGuilds().contains(server.getId())) {
+            if (DIContainer.getRepository().getKnownGuilds().contains(server.getIdAsString())) {
                 return;
             }
         } catch (SQLException e) {
