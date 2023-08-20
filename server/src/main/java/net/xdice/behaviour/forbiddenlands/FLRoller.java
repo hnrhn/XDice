@@ -51,7 +51,7 @@ public class FLRoller extends StandardRoller {
         int numNewBase = (int)previousRoll.getBaseResult().stream().filter(x -> x != 1 && x != 6).count();
         int numNewSkill = (int)previousRoll.getSkillResult().stream().filter(x -> x != 6).count();
         int numNewGear = (int)previousRoll.getGearResult().stream().filter(x -> x != 1 && x != 6).count();
-        int numNewArtifact = (int)previousRoll.getArtifactResult().stream().filter(x -> x != 1 && x != 6).count();
+        int numNewArtifact = (int)previousRoll.getArtifactResult().stream().filter(x -> x >= 6).count() == 0 ? 0 : 1;
 
         List<Integer> newBase = new ArrayList<>();
         List<Integer> newSkill = new ArrayList<>();
