@@ -1,0 +1,19 @@
+Hi! I'm the XDice configuration assistant!
+I'm going to guide you through the process of setting up XDice for your game.
+
+I've been told that humans feel more at ease when their assistants have names, so you can call me `ConfigurationAssistant_Instance_#0000`, or **Confi** for short.
+
+Alright! Now that we've gotten to know each other a little better, let's get on with the configuration, so you can get back to playing your games.
+
+First, I need to know how many sides are on the most common die you and your fellow players will be rolling.
+
+For example, if you are playing _Dungeons & Dragons_, you will be rolling a lot of d20s, so I can make that the default die.
+That way, when you want to roll a d20, you won't need to say so; XDice will know automatically! Isn't she wonderful?
+
+So, to set the default for your game, send a message like so:
+`/xdice config default_dice X` with X being the number of sides on your favourite dice.
+
+For example, if you will roll mostly d20s, the command is:
+`/xdice config default_dice 20`.
+
+Ready when you are!
