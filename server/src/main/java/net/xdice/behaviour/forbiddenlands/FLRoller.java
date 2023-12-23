@@ -51,15 +51,7 @@ public class FLRoller extends StandardRoller {
         int numNewBase = (int)previousRoll.getBaseResult().stream().filter(x -> x != 1 && x != 6).count();
         int numNewSkill = (int)previousRoll.getSkillResult().stream().filter(x -> x != 6).count();
         int numNewGear = (int)previousRoll.getGearResult().stream().filter(x -> x != 1 && x != 6).count();
-        int numNewArtifact =
-            previousRoll.getArtifactDieType() != null
-            && (int)previousRoll
-                .getArtifactResult()
-                .stream()
-                .filter(x -> x != 1 && x >= 6)
-                .count() == 0
-            ? 1
-            : 0;
+        int numNewArtifact = previousRoll.getArtifactDieType() != null && (int)previousRoll.getArtifactResult().stream().filter(x -> x != 1 && x >= 6).count() == 0 ? 1 : 0;
 
         List<Integer> newBase = new ArrayList<>();
         List<Integer> newSkill = new ArrayList<>();
@@ -116,23 +108,23 @@ public class FLRoller extends StandardRoller {
     private String parseResult(FLResult result) {
         ArrayList<String> parsedResult = new ArrayList<>();
         parsedResult.add("");
-        if (result.getBaseResult().size() > 0) {
+        if (!result.getBaseResult().isEmpty()) {
             parsedResult.add("Base: " + result.getBaseResult().toString().replace("6", ":crossed_swords:").replace("1", ":skull:"));
         }
 
-        if (result.getSkillResult().size() > 0) {
+        if (!result.getSkillResult().isEmpty()) {
             parsedResult.add("Skill: " + result.getSkillResult().toString().replace("6", ":crossed_swords:"));
         }
 
-        if (result.getGearResult().size() > 0) {
+        if (!result.getGearResult().isEmpty()) {
             parsedResult.add("Gear: " + result.getGearResult().toString().replace("6", ":crossed_swords:").replace("1", ":skull:"));
         }
 
-        if (result.getArtifactResult().size() > 0) {
+        if (!result.getArtifactResult().isEmpty()) {
             parsedResult.add("Artifact: " + result.getArtifactResult().toString().replace("6", ":crossed_swords:").replace("1", ":skull:"));
         }
 
-        if (result.getPrideResult().size() > 0) {
+        if (!result.getPrideResult().isEmpty()) {
             parsedResult.add("Pride: " + result.getPrideResult().toString().replace("6", ":crossed_swords:").replace("1", ":skull:"));
         }
 
@@ -140,6 +132,9 @@ public class FLRoller extends StandardRoller {
     }
 
     private Integer roll(Integer diceType) {
+        if (diceType == 0) {
+            return -999;
+        }
         return (int) (ThreadLocalRandom.current().nextInt(12, (diceType * 10 + 9)) / 10.0);
     }
 
