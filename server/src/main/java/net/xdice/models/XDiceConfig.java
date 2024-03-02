@@ -13,6 +13,8 @@ public class XDiceConfig {
 
     private int defaultDice;
 
+    private int defaultNumberOfDice;
+
     private boolean countSuccesses;
 
     private List<Integer> successOn;
@@ -34,6 +36,7 @@ public class XDiceConfig {
         boolean configMode,
         ConfigStep currentConfigStep,
         int defaultDice,
+        int defaultNumberOfDice,
         boolean countSuccesses,
         List<Integer> successOn,
         boolean addTotal,
@@ -47,6 +50,7 @@ public class XDiceConfig {
         this.configMode = configMode;
         this.currentConfigStep = currentConfigStep;
         this.defaultDice = defaultDice;
+        this.defaultNumberOfDice = defaultNumberOfDice;
         this.countSuccesses = countSuccesses;
         this.successOn = successOn;
         this.addTotal = addTotal;
@@ -63,6 +67,7 @@ public class XDiceConfig {
             false,
             ConfigStep.BEGIN,
             20,
+            1,
             false,
             null,
             false,
@@ -102,6 +107,10 @@ public class XDiceConfig {
         this.defaultDice = defaultDice;
     }
 
+    public int getDefaultNumberOfDice() { return defaultNumberOfDice; }
+
+    public void setDefaultNumberOfDice(int defaultNumberOfDice) { this.defaultNumberOfDice = defaultNumberOfDice; }
+
     public boolean isCountSuccesses() {
         return countSuccesses;
     }
@@ -122,9 +131,7 @@ public class XDiceConfig {
         return addTotal;
     }
 
-    public void setAddTotal(boolean addTotal) {
-        this.addTotal = addTotal;
-    }
+    public void setAddTotal(boolean addTotal) { this.addTotal = addTotal; }
 
     public PlusBehaviour getPlusBehaviour() {
         return plusBehaviour;

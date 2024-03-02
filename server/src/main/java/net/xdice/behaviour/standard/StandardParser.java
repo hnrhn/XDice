@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StandardParser implements XDiceParser {
-    private static final Pattern rollPattern = Pattern.compile("^[!/]r(?:oll)*\\s*(\\d*)\\s*d*\\s*(\\d*)(?:\\s*\\++\\s*(\\d*))? *$");
+    private static final Pattern rollPattern = Pattern.compile("^[!/]r(?:oll)*\\s*(\\d*)\\s*d*\\s*(\\d*)(?:\\s*[+-]\\s*(\\d*))? *$");
     private static final Pattern wtfPattern = Pattern.compile("(wtf|dicebot|xdice|what the fuck|what are you doing),? (?!\1)(wtf|dicebot|xdice|what the fuck|what are you doing)");
     private static final Pattern thanksPattern = Pattern.compile("(?:thank you|thanks),? (?:xdice|dicebot)");
     private static final Pattern insultPattern = Pattern.compile("(?:fuck you|screw you|i hate you|fuck off|go away|damn you),? (?:xdice|dicebot)");
@@ -28,7 +28,7 @@ public class StandardParser implements XDiceParser {
 
             command.setNumberOfDice(
                     rollMatcher.group(1) == null || rollMatcher.group(1).isEmpty()
-                            ? 1
+                            ? config.getDefaultNumberOfDice()
                             : Integer.parseInt(rollMatcher.group(1))
             );
 
